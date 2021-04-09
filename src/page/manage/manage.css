@@ -71,6 +71,7 @@ padding: 0 10px;
     display: flex;
     align-items: center;
     justify-content: center;
+    clear: both;
 }
 
 .btn {
@@ -109,11 +110,17 @@ padding: 0 10px;
 }
 
 .checkbox-color {
-    height: 20px;
-    width: 30px;
+    display: flex;
+    cursor: pointer;
+    height: 26px;
+    width: 33px;
     color: white;
     border-radius: 4px;
     margin: 2px;
     text-align: center;
     padding-top: 9px;
+    float:left;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
 }

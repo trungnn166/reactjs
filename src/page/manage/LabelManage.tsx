@@ -7,8 +7,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import './manage.css';
 import CloseIcon from '@material-ui/icons/Close';
-import { withStyles } from '@material-ui/core/styles';
-import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import CheckIcon from '@material-ui/icons/Check';
 
 const columns: GridColDef[] = [
@@ -47,6 +45,34 @@ const rows = [
   { id: 5, labelName: 'Không có nhu cầu', updateDate: '06/06/2019'},
   { id: 6, labelName: 'Đang thương lượng', updateDate: '25/06/2019'},
 ];
+const colors = [
+  { color: "rgb(85, 231, 148)" },
+  { color: "rgb(212, 126, 46)" },
+  { color: "rgb(5, 169, 76)" },
+  { color: "rgb(214, 28, 0)" },
+  { color: "rgb(253, 158, 2)" },
+  { color: "rgb(6, 122, 193)" },
+  { color: "rgb(253, 122, 205)" },
+  { color: "rgb(53, 82, 100)" },
+  { color: "rgb(107, 128, 140)" },
+];
+const CheckBoxColor = ({ checked, color, onClick }) => {
+  return (
+    <div
+      className="checkbox-color"
+      style={{
+        backgroundColor: color,
+      }}
+      onClick={() => {
+        if (typeof onClick === "function") {
+          onClick();
+        }
+      }}
+    >
+      {checked && <CheckIcon />}
+    </div>
+  );
+};
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -79,18 +105,11 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const CheckboxColor01 = withStyles({
-  root: {
-    color: 'rgb(85, 231, 148)',
-    '&$checked': {
-      color: 'rgb(85, 231, 148)',
-    },
-  },
-}) ((props: CheckboxProps) => <Checkbox color="default" {...props} />);;
 export default function LabelManage() {
   const classes = useStyles();
 
   const [openModalAdd, setOpenModalAdd] = useState(false);
+  const [indexColor, setIndexColor] = useState(-1)
 
   const handleOpenModalAdd = () => {
     setOpenModalAdd(true);
@@ -99,6 +118,10 @@ export default function LabelManage() {
   const handleCloseModalAdd = () => {
     setOpenModalAdd(false);
   };
+  
+  const handleSave = () => {
+    console.log(colors[indexColor].color);
+  }
 
   return (
     <div style={{ height: 400, width: '100%' }} >
@@ -114,19 +137,21 @@ export default function LabelManage() {
             <InputLabel>Tên nhãn</InputLabel>
             <TextField placeholder="Nhập tên nhãn" className={classes.textField}/>
             <InputLabel className="marginTop20px" style={{marginBottom: '10px'}}>Màu</InputLabel>
-             <div className="checkbox-color glyphicon" style={{backgroundColor: 'rgb(85, 231, 148)'}}><CheckIcon/></div>
-             <div className="checkbox-color glyphicon" style={{backgroundColor: 'rgb(212, 126, 46)'}}></div>
-             <div className="checkbox-color glyphicon" style={{backgroundColor: 'rgb(5, 169, 76)'}}></div>
-             <div className="checkbox-color glyphicon" style={{backgroundColor: 'rgb(214, 28, 0)'}}></div>
-             <div className="checkbox-color glyphicon" style={{backgroundColor: 'rgb(253, 158, 2)'}}></div>
-             <div className="checkbox-color glyphicon" style={{backgroundColor: 'rgb(6, 122, 193)'}}></div>
-             <div className="checkbox-color glyphicon" style={{backgroundColor: 'rgb(253, 122, 205)'}}></div>
-             <div className="checkbox-color glyphicon" style={{backgroundColor: 'rgb(53, 82, 100)'}}></div>
-             <div className="checkbox-color glyphicon" style={{backgroundColor: 'rgb(107, 128, 140)'}}></div>
+            {colors.map((item, index) => {
+              return (
+                <CheckBoxColor
+                  checked={indexColor === index}
+                  color={item.color}
+                  onClick={() => {
+                    setIndexColor(index);
+                  }}
+                />
+              );
+            })}
           </div>
           <div className="footer-modal">
               <Button className="btn btn-danger" onClick={handleCloseModalAdd}>Hủy</Button>
-              <Button className="btn btn-success">Xác nhận</Button>
+              <Button className="btn btn-success" onClick={handleSave}>Xác nhận</Button>
           </div>
         </div>
       </Modal>
